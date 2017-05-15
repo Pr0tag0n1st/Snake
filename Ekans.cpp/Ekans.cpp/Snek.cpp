@@ -36,6 +36,7 @@ int main() {
 	al_init_ttf_addon();
 	ALLEGRO_DISPLAY*display = al_create_display(SCREEN_W, SCREEN_H);
 	ALLEGRO_BITMAP*snake = NULL;
+	ALLEGRO_BITMAP*snak = NULL;
 	ALLEGRO_FONT*font = NULL;
 	ALLEGRO_SAMPLE*bite = NULL;
 	ALLEGRO_SAMPLE*music = NULL;
@@ -59,7 +60,7 @@ int main() {
 		for (int j = 0; j < 20; j++)
 			grid[i][j] = 0;
 
-	grid[snak_x][snak_y] =2;
+
 
 	srand(time(NULL));
 	al_set_target_bitmap(al_get_backbuffer(display));
@@ -261,7 +262,7 @@ int main() {
 				for (int j = 0; j < 20; j++) {
 					//0 is background
 					if (grid[i][j] == 0)
-						al_draw_filled_rectangle(i*sneksize, j*sneksize, i*sneksize + sneksize, j*sneksize + sneksize, al_map_rgb(200, 100, 150));
+						al_draw_filled_rectangle(i*sneksize, j*sneksize, i*sneksize + sneksize, j*sneksize + sneksize, al_map_rgb(0, 0, 0));
 
 					//1 is snek
 					if (grid[i][j] == 1)
@@ -269,7 +270,7 @@ int main() {
 
 					//2 is snak
 					if (grid[i][j] == 2) {
-						al_draw_rectangle(i*sneksize, j*sneksize, i*sneksize + sneksize, j*sneksize + sneksize, al_map_rgb(250, 250, 250), 4);
+						al_draw_rectangle(i*sneksize, j*sneksize, i*sneksize + sneksize, j*sneksize + sneksize, al_map_rgb(200, 100, 150), 4);
 						cout << "drawing snak at " << i << " ," << j << endl;
 					}
 
