@@ -18,13 +18,15 @@ int main() {
 	int head_y = 1;
 	int snak_x = 2;
 	int snak_y = 2;
-	int sneksize = 40;
+	int sneksize = 20;
 	bool key[4]{ false, false, false, false };
 	int snake_length = 0; //tail length
 	bool Eatgoal = false;
 	bool doexit = false;
 	bool redraw = true;
 	bool freshsnak = false;
+	double speed = 0.1;
+	int score = 0;
 
 	al_init();
 	al_install_keyboard();
@@ -36,7 +38,6 @@ int main() {
 	al_init_ttf_addon();
 	ALLEGRO_DISPLAY*display = al_create_display(SCREEN_W, SCREEN_H);
 	ALLEGRO_BITMAP*snake = NULL;
-	ALLEGRO_BITMAP*snak = NULL;
 	ALLEGRO_FONT*font = NULL;
 	ALLEGRO_SAMPLE*bite = NULL;
 	ALLEGRO_SAMPLE*music = NULL;
@@ -52,12 +53,12 @@ int main() {
 	//	music = al_load_sample("music.wav");
 	//  al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 	font = al_create_builtin_font();
-	timer = al_create_timer(0.2);
+	timer = al_create_timer(speed);
 	display = al_create_display(SCREEN_W, SCREEN_H);
 	
-	int grid[20][20];
-	for (int i = 0; i < 20; i++)
-		for (int j = 0; j < 20; j++)
+	int grid[40][40];
+	for (int i = 0; i < 40; i++)
+		for (int j = 0; j < 40; j++)
 			grid[i][j] = 0;
 
 
@@ -89,11 +90,10 @@ int main() {
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
 			
 			//wipe map
-			for (int i = 0; i < 20; i++)
-				for (int j = 0; j < 20; j++) {
+			for (int i = 0; i < 40; i++)
+				for (int j = 0; j < 40; j++) {
 					if (grid[i][j] == 1)
 						grid[i][j] = 0;
-
 
 				}
 			grid[snak_x][snak_y] = 2;
@@ -113,6 +113,9 @@ int main() {
 				cout << "om nom" << endl;
 				//freshsnak = false;
 				snake_length += 2;
+				score++;
+				speed = speed + 0.01;
+				
 			}
 
 
@@ -120,8 +123,8 @@ int main() {
 			if (Eatgoal == true /*&& freshsnak == false*/) {
 				grid[snak_x][snak_y] = 0;
 				cout << "snak despensing!" << endl;
-				snak_x = rand() % 20;
-				snak_y = rand() % 20;
+				snak_x = rand() % 40;
+				snak_y = rand() % 40;
 				Eatgoal = false;
 				//freshsnak = true;
 				cout << "Goal @ " << snak_x << ", " << snak_y << endl;
@@ -130,11 +133,11 @@ int main() {
 			//move snek head
 			if (key[0] && head_y > 0)
 				head_y -= 1;
-			if (key[1] && head_y < 20)
+			if (key[1] && head_y < 40)
 				head_y += 1;
 			if (key[2] && head_x > 0)
 				head_x -= 1;
-			if (key[3] && head_x < 20)
+			if (key[3] && head_x < 40)
 				head_x += 1;
 
 	
@@ -142,8 +145,8 @@ int main() {
 			//draw snek head to map
 			if (head_x >= 0 &&
 				head_y >= 0 &&
-				head_x < 20 &&
-				head_y < 20)
+				head_x < 40 &&
+				head_y < 40)
 				grid[head_x][head_y] = 1;
 
 			//push the coordinates into the vector
@@ -153,7 +156,7 @@ int main() {
 			if (head_x < 0 || head_y < 0)
 				cout << "MATRIX ERROR" << endl;
 
-			if (head_x <= -1 || head_x > 19 || head_y <= -1 || head_y > 19) {
+			if (head_x <= -1 || head_x > 49 || head_y <= -1 || head_y > 49) {
 				cout << "Hit a wall, snek is ded" << endl;
 				al_clear_to_color(al_map_rgb(0, 0, 0));
 				al_draw_textf(font, al_map_rgb(255, 100, 100), 300, 300, NULL, "Snek done dedded dude");
@@ -258,8 +261,8 @@ int main() {
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 			if (Eatgoal == false)
 				grid[snak_x][snak_y] = 0;
-			for (int i = 0; i < 20; i++)
-				for (int j = 0; j < 20; j++) {
+			for (int i = 0; i < 40; i++)
+				for (int j = 0; j < 40; j++) {
 					//0 is background
 					if (grid[i][j] == 0)
 						al_draw_filled_rectangle(i*sneksize, j*sneksize, i*sneksize + sneksize, j*sneksize + sneksize, al_map_rgb(0, 0, 0));
@@ -270,7 +273,7 @@ int main() {
 
 					//2 is snak
 					if (grid[i][j] == 2) {
-						al_draw_rectangle(i*sneksize, j*sneksize, i*sneksize + sneksize, j*sneksize + sneksize, al_map_rgb(200, 100, 150), 4);
+						al_draw_filled_rectangle(i*sneksize, j*sneksize, i*sneksize + sneksize, j*sneksize + sneksize, al_map_rgb(50, 250, 50));
 						cout << "drawing snak at " << i << " ," << j << endl;
 					}
 
@@ -278,6 +281,8 @@ int main() {
 						grid[snak_x][snak_y] = 0;
 			
 				}
+			al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 770, 0, "Score:%d", score);
+			al_draw_filled_rectangle(snak_x*sneksize, snak_y*sneksize, snak_x*sneksize + sneksize, snak_y*sneksize + sneksize, al_map_rgb(250, 50, 50));
 			al_flip_display();
 		}//end render
 	}
