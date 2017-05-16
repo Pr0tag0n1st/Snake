@@ -50,8 +50,8 @@ int main() {
 
 
 	al_reserve_samples(2);
-	//	music = al_load_sample("music.wav");
-	//  al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+		music = al_load_sample("SnekBeats.wav");
+		al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 	font = al_create_builtin_font();
 	timer = al_create_timer(speed);
 	display = al_create_display(SCREEN_W, SCREEN_H);
@@ -114,7 +114,7 @@ int main() {
 				//freshsnak = false;
 				snake_length += 2;
 				score++;
-				speed = speed + 0.01;
+				speed = speed - 0.1;
 				
 			}
 
@@ -156,7 +156,7 @@ int main() {
 			if (head_x < 0 || head_y < 0)
 				cout << "MATRIX ERROR" << endl;
 
-			if (head_x <= -1 || head_x > 49 || head_y <= -1 || head_y > 49) {
+			if (head_x <= -1 || head_x > 39 || head_y <= -1 || head_y > 39) {
 				cout << "Hit a wall, snek is ded" << endl;
 				al_clear_to_color(al_map_rgb(0, 0, 0));
 				al_draw_textf(font, al_map_rgb(255, 100, 100), 300, 300, NULL, "Snek done dedded dude");
