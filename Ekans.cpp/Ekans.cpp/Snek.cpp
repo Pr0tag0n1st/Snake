@@ -25,7 +25,7 @@ int main() {
 	bool doexit = false;
 	bool redraw = true;
 	bool freshsnak = false;
-	double speed = 0.1;
+	double speed = 0.05;
 	int score = 0;
 
 	al_init();
@@ -38,6 +38,7 @@ int main() {
 	al_init_ttf_addon();
 	ALLEGRO_DISPLAY*display = al_create_display(SCREEN_W, SCREEN_H);
 	ALLEGRO_BITMAP*snake = NULL;
+	ALLEGRO_BITMAP*snak = NULL;
 	ALLEGRO_FONT*font = NULL;
 	ALLEGRO_SAMPLE*bite = NULL;
 	ALLEGRO_SAMPLE*music = NULL;
@@ -50,8 +51,8 @@ int main() {
 
 
 	al_reserve_samples(2);
-		music = al_load_sample("SnekBeats.wav");
-		al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+	music = al_load_sample("SnekBeats.wav");
+	al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 	font = al_create_builtin_font();
 	timer = al_create_timer(speed);
 	display = al_create_display(SCREEN_W, SCREEN_H);
@@ -62,8 +63,9 @@ int main() {
 			grid[i][j] = 0;
 
 
-
+	grid[snak_x][snak_y] = 2;
 	srand(time(NULL));
+	snak = al_create_bitmap(20, 20);
 	al_set_target_bitmap(al_get_backbuffer(display));
 	event_queue = al_create_event_queue();
 	al_reserve_samples(10);
@@ -96,16 +98,16 @@ int main() {
 						grid[i][j] = 0;
 
 				}
-			grid[snak_x][snak_y] = 2;
+
 
 	//redraw snek
 			for (int i = 0; i < snake_length; i = i + 2) {
-				cout << "snek tail is at " << nodes[i] << " , " << nodes[i + 1] << endl;
+				
 				grid[nodes[i]][nodes[i + 1]] = 1;
 
 			}
 
-			cout << "snak is at " << snak_x<< " , " << snak_y << endl;
+			
 	
 			//check if snek 8 snak
 			if (grid[snak_x] == grid[head_x] && grid[snak_y] == grid[head_y] /*&& freshsnak == true*/) {
@@ -114,7 +116,7 @@ int main() {
 				//freshsnak = false;
 				snake_length += 2;
 				score++;
-				speed = speed - 0.1;
+				speed = speed - 0.5;
 				
 			}
 
@@ -157,8 +159,8 @@ int main() {
 				cout << "MATRIX ERROR" << endl;
 
 			if (head_x <= -1 || head_x > 39 || head_y <= -1 || head_y > 39) {
-				cout << "Hit a wall, snek is ded" << endl;
 				al_clear_to_color(al_map_rgb(0, 0, 0));
+				al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 770, 0, "Final Score:%d", score);
 				al_draw_textf(font, al_map_rgb(255, 100, 100), 300, 300, NULL, "Snek done dedded dude");
 				al_flip_display();
 				al_rest(2);
@@ -173,6 +175,7 @@ int main() {
 				if ((head_x == *iter &&  head_y == *(iter + 1))) {
 					//cout << "Snek tail killed snek" << endl;
 					al_clear_to_color(al_map_rgb(0, 0, 0));
+					al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 770, 0, "Final Score:%d", score);
 					al_draw_textf(font, al_map_rgb(255, 100, 100), 300, 300, NULL, "Snek done dedded dude");
 					al_flip_display();
 					al_rest(2);
@@ -273,7 +276,7 @@ int main() {
 
 					//2 is snak
 					if (grid[i][j] == 2) {
-						al_draw_filled_rectangle(i*sneksize, j*sneksize, i*sneksize + sneksize, j*sneksize + sneksize, al_map_rgb(50, 250, 50));
+						al_draw_filled_rectangle(snak_x*sneksize, snak_y*sneksize, snak_x*sneksize + sneksize, snak_y*sneksize + sneksize, al_map_rgb(250, 50, 50));
 						cout << "drawing snak at " << i << " ," << j << endl;
 					}
 
@@ -283,6 +286,7 @@ int main() {
 				}
 			al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 770, 0, "Score:%d", score);
 			al_draw_filled_rectangle(snak_x*sneksize, snak_y*sneksize, snak_x*sneksize + sneksize, snak_y*sneksize + sneksize, al_map_rgb(250, 50, 50));
+			
 			al_flip_display();
 		}//end render
 	}
