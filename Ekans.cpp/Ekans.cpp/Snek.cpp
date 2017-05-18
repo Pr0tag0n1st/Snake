@@ -52,7 +52,8 @@ int main() {
 
 	al_reserve_samples(2);
 	music = al_load_sample("SnekBeats.wav");
-	al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+	al_play_sample(music, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+	bite = al_load_sample("Chomp.wav");
 	font = al_create_builtin_font();
 	timer = al_create_timer(speed);
 	display = al_create_display(SCREEN_W, SCREEN_H);
@@ -112,11 +113,13 @@ int main() {
 			//check if snek 8 snak
 			if (grid[snak_x] == grid[head_x] && grid[snak_y] == grid[head_y] /*&& freshsnak == true*/) {
 				Eatgoal = true;
+				bite = al_load_sample("Chomp.wav");
+				al_play_sample(bite, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 				cout << "om nom" << endl;
 				//freshsnak = false;
 				snake_length += 2;
 				score++;
-				speed = speed - 0.5;
+				speed = speed - 0.005;
 				
 			}
 
@@ -161,6 +164,8 @@ int main() {
 			if (head_x <= -1 || head_x > 39 || head_y <= -1 || head_y > 39) {
 				al_clear_to_color(al_map_rgb(0, 0, 0));
 				al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 770, 0, "Final Score:%d", score);
+				bite = al_load_sample("dead.wav");
+				al_play_sample(bite, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 				al_draw_textf(font, al_map_rgb(255, 100, 100), 300, 300, NULL, "Snek done dedded dude");
 				al_flip_display();
 				al_rest(2);
@@ -176,6 +181,8 @@ int main() {
 					//cout << "Snek tail killed snek" << endl;
 					al_clear_to_color(al_map_rgb(0, 0, 0));
 					al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 770, 0, "Final Score:%d", score);
+					bite = al_load_sample("dead.wav");
+					al_play_sample(bite, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 					al_draw_textf(font, al_map_rgb(255, 100, 100), 300, 300, NULL, "Snek done dedded dude");
 					al_flip_display();
 					al_rest(2);
