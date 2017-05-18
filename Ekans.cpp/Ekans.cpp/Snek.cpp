@@ -24,7 +24,7 @@ int main() {
 	bool Eatgoal = false;
 	bool doexit = false;
 	bool redraw = true;
-	bool freshsnak = false;
+
 	double speed = 0.05;
 	int score = 0;
 
@@ -111,12 +111,11 @@ int main() {
 			
 	
 			//check if snek 8 snak
-			if (grid[snak_x] == grid[head_x] && grid[snak_y] == grid[head_y] /*&& freshsnak == true*/) {
+			if (grid[snak_x] == grid[head_x] && grid[snak_y] == grid[head_y]) {
 				Eatgoal = true;
 				bite = al_load_sample("Chomp.wav");
 				al_play_sample(bite, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 				cout << "om nom" << endl;
-				//freshsnak = false;
 				snake_length += 2;
 				score++;
 				speed = speed - 0.005;
@@ -125,13 +124,13 @@ int main() {
 
 
 			//redraw snack
-			if (Eatgoal == true /*&& freshsnak == false*/) {
+			if (Eatgoal == true ) {
 				grid[snak_x][snak_y] = 0;
 				cout << "snak despensing!" << endl;
 				snak_x = rand() % 40;
 				snak_y = rand() % 40;
 				Eatgoal = false;
-				//freshsnak = true;
+
 				cout << "Goal @ " << snak_x << ", " << snak_y << endl;
 			}
 
