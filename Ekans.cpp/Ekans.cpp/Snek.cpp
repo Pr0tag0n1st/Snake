@@ -8,12 +8,29 @@
 #include<allegro5/allegro_image.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_font.h>
+//#include<string>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 
 int main() {
+	//int highscores[10];
+	//ifstream scoreread;
+	//int num;
+	//scoreread.open("HISCORE.txt");
 
+	//for (int i = 0; i < 5; i++) {
+	//	cout << "i is " << i << endl;
+	//	scoreread >> num;
+	//	highscores[i] = num;
+	//	cout << highscores[i]<<endl;
+	//}
+
+
+//	int tempscore;
+//	ofstream scoresave;
+//	scoresave.open("HISCORE.txt");
 	int SCREEN_W = 800;
 	int SCREEN_H = 800;
 	int head_x = 1;
@@ -54,7 +71,7 @@ int main() {
 
 	al_reserve_samples(2);
 	music = al_load_sample("SnekBeats.wav");
-	al_play_sample(music, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+	al_play_sample(music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 	bite = al_load_sample("Chomp.wav");
 	font = al_create_builtin_font();
 	timer = al_create_timer(speed);
@@ -76,7 +93,17 @@ int main() {
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_clear_to_color(al_map_rgb(0, 0, 0));
+	//cout << "flag1" << endl;
+	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 400, 0, "Top 5 Scores:");
+	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 450, 0, "%s", highscores[0]);
+	//cout << "flag2" << endl;
+	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 500, 0, "%s", highscores[1]);
+	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 550, 0, "%s", highscores[2]);
+	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 600, 0, "%s", highscores[3]);
+	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 450, 0, "%s", highscores[4]);
+
 	al_flip_display();
+//	al_rest(3);
 	al_start_timer(timer);
 	//cout << "Flag1" << endl;
 	while (doexit != true) {
@@ -298,6 +325,18 @@ int main() {
 			al_flip_display();
 		}//end render
 	}
+
+	//for (int i = 0; i < 5; i++) {
+	//	if (score > highscores[i]) {
+	//		tempscore = highscores[i];
+	//		highscores[i] = score;
+	//		if (i + 1 < 5) {
+	//			highscores[i + 1] = tempscore;
+	//			scoresave << highscores[i];
+	//		}
+	//	}
+	//}
+
 	al_destroy_bitmap(snake);
 	al_destroy_timer(timer);
 	al_destroy_display(display);
