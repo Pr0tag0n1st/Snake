@@ -15,22 +15,22 @@ using namespace std;
 
 
 int main() {
-	//int highscores[10];
-	//ifstream scoreread;
-	//int num;
-	//scoreread.open("HISCORE.txt");
+	int scores[5];
+	int highscores[5];
+	ifstream scoreread;
+	int num;
+	scoreread.open("HISCORE.txt");
+	bool dead = false;
+	for (int i = 0; i < 5; i++) {
+		scoreread >> num;
+		scores[i] = num;
+		cout << scores[i]<<endl;
+	}
+	scoreread.close();
 
-	//for (int i = 0; i < 5; i++) {
-	//	cout << "i is " << i << endl;
-	//	scoreread >> num;
-	//	highscores[i] = num;
-	//	cout << highscores[i]<<endl;
-	//}
-
-
-//	int tempscore;
-//	ofstream scoresave;
-//	scoresave.open("HISCORE.txt");
+	int tempscore;
+	ofstream scoresave;
+	scoresave.open("HISCORE.txt");
 	int SCREEN_W = 800;
 	int SCREEN_H = 800;
 	int head_x = 1;
@@ -93,20 +93,15 @@ int main() {
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-	//cout << "flag1" << endl;
-	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 400, 0, "Top 5 Scores:");
-	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 450, 0, "%s", highscores[0]);
-	//cout << "flag2" << endl;
-	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 500, 0, "%s", highscores[1]);
-	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 550, 0, "%s", highscores[2]);
-	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 600, 0, "%s", highscores[3]);
-	//al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 450, 0, "%s", highscores[4]);
-
+	al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 400, 0, "Top 5 Scores:");
+	for (int i = 0; i < 5; i++) {
+		al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 450 + i * 50, 0, "%d", scores[i]);
+	}
 	al_flip_display();
-//	al_rest(3);
+	al_rest(3);
 	al_start_timer(timer);
 	//cout << "Flag1" << endl;
-	while (doexit != true) {
+	while (doexit != true && dead == false) {
 
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
@@ -197,7 +192,8 @@ int main() {
 				al_draw_textf(font, al_map_rgb(255, 100, 100), 300, 300, NULL, "Snek done dedded dude");
 				al_flip_display();
 				al_rest(2);
-				return 0;
+				dead = true;
+				break;
 			}
 
 			for (iter = nodes.begin() + 2; iter < nodes.end(); iter += 2) {
@@ -214,7 +210,8 @@ int main() {
 					al_draw_textf(font, al_map_rgb(255, 100, 100), 300, 300, NULL, "Snek done dedded dude");
 					al_flip_display();
 					al_rest(2);
-					return 0;
+					dead = true;
+					break;
 				}
 			}
 
@@ -324,19 +321,30 @@ int main() {
 			
 			al_flip_display();
 		}//end render
+
+	} 
+
+	for (int i = 0; i < 5; i++) {
+		if (score > scores[i]) {
+			tempscore = scores[i];
+			highscores[i] = score;
+			score = tempscore;
+		}
+		else
+			highscores[i] = scores[i];
 	}
 
-	//for (int i = 0; i < 5; i++) {
-	//	if (score > highscores[i]) {
-	//		tempscore = highscores[i];
-	//		highscores[i] = score;
-	//		if (i + 1 < 5) {
-	//			highscores[i + 1] = tempscore;
-	//			scoresave << highscores[i];
-	//		}
-	//	}
-	//}
-
+	al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 400, 0, "Top 5 Scores:");
+	for (int i = 0; i < 5; i++) {
+		al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 450 + i * 50, 0, "%d", highscores[i]);
+		al_rest(0.5);
+		al_flip_display();
+	}
+	al_rest(3);
+	al_flip_display();
+	for (int i = 0; i < 5; i++) {
+		scoresave << highscores[i] << endl;;
+	}
 	al_destroy_bitmap(snake);
 	al_destroy_timer(timer);
 	al_destroy_display(display);
