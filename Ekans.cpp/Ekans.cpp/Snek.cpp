@@ -97,10 +97,16 @@ int main() {
 	dino = al_load_bitmap("DinoStudios.jpg");
 	al_draw_bitmap(dino, 0, 0, 0);
 	al_flip_display();
-	al_rest(1.0);
+	al_rest(0.5);
+	for (int i = 255; i > 0; i-=5) {
+		al_draw_tinted_bitmap(dino, al_map_rgb(i, i, i), 0, 0, 0);
+		al_flip_display();
+		al_rest(0.05);
+	}
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
 	al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 400, 0, "Top 5 Scores:");
+	al_rest(0.5);
 	al_flip_display();
 	for (int i = 0; i < 5; i++) {
 
