@@ -11,6 +11,7 @@
 //#include<string>
 #include <vector>
 #include <fstream>
+#include <Windows.h>
 using namespace std;
 
 
@@ -64,6 +65,7 @@ int main() {
 	ALLEGRO_SAMPLE_INSTANCE*background = NULL;
 	ALLEGRO_TIMER*timer = NULL;
 	ALLEGRO_EVENT_QUEUE*event_queue = NULL;
+	ALLEGRO_BITMAP*dino = NULL;
 
 	vector<int>nodes;
 	vector<int>::const_iterator iter;
@@ -92,13 +94,22 @@ int main() {
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
-	al_clear_to_color(al_map_rgb(0, 0, 0));
-	al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 400, 0, "Top 5 Scores:");
-	for (int i = 0; i < 5; i++) {
-		al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 450 + i * 50, 0, "%d", scores[i]);
-	}
+	dino = al_load_bitmap("DinoStudios.jpg");
+	al_draw_bitmap(dino, 0, 0, 0);
 	al_flip_display();
-	al_rest(3);
+	al_rest(1.0);
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+
+	al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 400, 0, "Top 5 Scores:");
+	al_flip_display();
+	for (int i = 0; i < 5; i++) {
+
+		al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 450 + i * 50, 0, "%d", scores[i]);
+		al_rest(0.25);
+		al_flip_display();
+
+	}
+	al_rest(1);
 	al_start_timer(timer);
 	//cout << "Flag1" << endl;
 	while (doexit != true && dead == false) {
@@ -337,10 +348,10 @@ int main() {
 	al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 400, 0, "Top 5 Scores:");
 	for (int i = 0; i < 5; i++) {
 		al_draw_textf(font, al_map_rgb(255, 255, 255), 400, 450 + i * 50, 0, "%d", highscores[i]);
-		al_rest(0.5);
+		al_rest(0.25);
 		al_flip_display();
 	}
-	al_rest(3);
+	al_rest(1);
 	al_flip_display();
 	for (int i = 0; i < 5; i++) {
 		scoresave << highscores[i] << endl;;
