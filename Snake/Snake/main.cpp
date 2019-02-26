@@ -26,7 +26,7 @@ int main() {
 	for (int i = 0; i < 5; i++) {
 		scoreread >> num;
 		scores[i] = num;
-		cout << scores[i]<<endl;
+		cout << scores[i] << endl;
 	}
 	scoreread.close();
 
@@ -37,8 +37,8 @@ int main() {
 	int SCREEN_H = 800;
 	int head_x = 1;
 	int head_y = 1;
-	int snak_x = 2;
-	int snak_y = 2;
+	int snak_x = rand() % 40;
+	int snak_y = rand() % 40;
 	int sneksize = 20;
 	bool key[4]{ false, false, false, false };
 	int snake_length = 0; //tail length
@@ -79,7 +79,7 @@ int main() {
 	font = al_create_builtin_font();
 	timer = al_create_timer(speed);
 	display = al_create_display(SCREEN_W, SCREEN_H);
-	
+
 	int grid[40][40];
 	for (int i = 0; i < 40; i++)
 		for (int j = 0; j < 40; j++)
@@ -99,7 +99,7 @@ int main() {
 	al_draw_bitmap(dino, 0, 0, 0);
 	al_flip_display();
 	al_rest(0.5);
-	for (int i = 255; i > 0; i-=5) {
+	for (int i = 255; i > 0; i -= 5) {
 		al_draw_tinted_bitmap(dino, al_map_rgb(i, i, i), 0, 0, 0);
 		al_flip_display();
 		al_rest(0.05);
@@ -133,7 +133,7 @@ int main() {
 
 
 		if (ev.type == ALLEGRO_EVENT_TIMER) {
-			
+
 			//wipe map
 			for (int i = 0; i < 40; i++)
 				for (int j = 0; j < 40; j++) {
@@ -143,15 +143,15 @@ int main() {
 				}
 
 
-	//redraw snek
+			//redraw snek
 			for (int i = 0; i < snake_length; i = i + 2) {
-				
+
 				grid[nodes[i]][nodes[i + 1]] = 1;
 
 			}
 
-			
-	
+
+
 			//check if snek 8 snak
 			if (grid[snak_x] == grid[head_x] && grid[snak_y] == grid[head_y]) {
 				Eatgoal = true;
@@ -161,12 +161,12 @@ int main() {
 				snake_length += 2;
 				score++;
 				speed = speed - 0.005;
-				
+
 			}
 
 
 			//redraw snack
-			if (Eatgoal == true ) {
+			if (Eatgoal == true) {
 				grid[snak_x][snak_y] = 0;
 				cout << "snak despensing!" << endl;
 				snak_x = rand() % 40;
@@ -186,7 +186,7 @@ int main() {
 			if (key[3] && head_x < 40)
 				head_x += 1;
 
-	
+
 
 			//draw snek head to map
 			if (head_x >= 0 &&
@@ -240,69 +240,69 @@ int main() {
 
 		}//end timer section
 
-			else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
 
-				//"keycode" holds all the different keys on the keyboard
-				switch (ev.keyboard.keycode) {
+			//"keycode" holds all the different keys on the keyboard
+			switch (ev.keyboard.keycode) {
 
-					//if the up key has been pressed
-				case ALLEGRO_KEY_UP:
-					key[0] = true;
-					key[1] = false;
-					key[2] = false;
-					key[3] = false;
-					break;
+				//if the up key has been pressed
+			case ALLEGRO_KEY_UP:
+				key[0] = true;
+				key[1] = false;
+				key[2] = false;
+				key[3] = false;
+				break;
 
-					//if the down key has been pressed
-				case ALLEGRO_KEY_DOWN:
-					key[1] = true;
-					key[2] = false;
-					key[3] = false;
-					key[0] = false;
-					break;
+				//if the down key has been pressed
+			case ALLEGRO_KEY_DOWN:
+				key[1] = true;
+				key[2] = false;
+				key[3] = false;
+				key[0] = false;
+				break;
 
-					//if the left key has been pressed
-				case ALLEGRO_KEY_LEFT:
-					key[2] = true;
-					key[3] = false;
-					key[0] = false;
-					key[1] = false;
-					break;
+				//if the left key has been pressed
+			case ALLEGRO_KEY_LEFT:
+				key[2] = true;
+				key[3] = false;
+				key[0] = false;
+				key[1] = false;
+				break;
 
-					//if the right key has been pressed
-				case ALLEGRO_KEY_RIGHT:
-					key[3] = true;
-					key[0] = false;
-					key[1] = false;
-					key[2] = false;
-					break;
-				}
+				//if the right key has been pressed
+			case ALLEGRO_KEY_RIGHT:
+				key[3] = true;
+				key[0] = false;
+				key[1] = false;
+				key[2] = false;
+				break;
 			}
-			//has something been released on the keyboard?
-			else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
-				switch (ev.keyboard.keycode) {
-				case ALLEGRO_KEY_UP:
-					//key[0] = false;
-					break;
+		}
+		//has something been released on the keyboard?
+		else if (ev.type == ALLEGRO_EVENT_KEY_UP) {
+			switch (ev.keyboard.keycode) {
+			case ALLEGRO_KEY_UP:
+				//key[0] = false;
+				break;
 
-				case ALLEGRO_KEY_DOWN:
-					//key[1] = false;
-					break;
+			case ALLEGRO_KEY_DOWN:
+				//key[1] = false;
+				break;
 
-				case ALLEGRO_KEY_LEFT:
-					///key[2] = false;
-					break;
+			case ALLEGRO_KEY_LEFT:
+				///key[2] = false;
+				break;
 
-				case ALLEGRO_KEY_RIGHT:
-					//key[3] = false;
-					break;
+			case ALLEGRO_KEY_RIGHT:
+				//key[3] = false;
+				break;
 
-					//kill the program if someone presses escape
-				case ALLEGRO_KEY_ESCAPE:
-					doexit = true;
-					break;
-				}
+				//kill the program if someone presses escape
+			case ALLEGRO_KEY_ESCAPE:
+				doexit = true;
+				break;
 			}
+		}
 
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
@@ -332,15 +332,15 @@ int main() {
 
 					if (Eatgoal == true)
 						grid[snak_x][snak_y] = 0;
-			
+
 				}
 			al_draw_textf(font, al_map_rgb(255, 255, 255), 20, 770, 0, "Score:%d", score);
 			al_draw_filled_rectangle(snak_x*sneksize, snak_y*sneksize, snak_x*sneksize + sneksize, snak_y*sneksize + sneksize, al_map_rgb(250, 50, 50));
-			
+
 			al_flip_display();
 		}//end render
 
-	} 
+	}
 
 	for (int i = 0; i < 5; i++) {
 		if (score > scores[i]) {
